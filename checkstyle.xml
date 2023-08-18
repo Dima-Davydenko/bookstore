@@ -247,4 +247,8 @@
             <property name="validateComments" value="true"/>
         </module>
     </module>
+    <module name="SuppressionSingleFilter">
+        <property name="files" value="[/\\]target[/\\]"/>
+        <property name="checks" value=".*"/>
+    </module>
 </module>
