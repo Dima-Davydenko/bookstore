@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import my.bookstore.dto.BookDto;
 import my.bookstore.dto.BookSearchParameters;
 import my.bookstore.dto.CreateBookRequestDto;
-import my.bookstore.exception.EntityNotFoundException;
 import my.bookstore.mapper.BookMapper;
 import my.bookstore.model.Book;
 import my.bookstore.repository.book.BookRepository;
@@ -35,9 +34,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getBookById(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Can't find book by id " + id)
-        );
+        Book book = bookRepository.findById(id).get();
         return bookMapper.toDto(book);
     }
 
