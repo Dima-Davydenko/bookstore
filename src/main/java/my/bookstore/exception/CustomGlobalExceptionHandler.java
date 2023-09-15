@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -19,9 +18,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    private static final int ELEMENT_POS = 1;
-    private static final int ELEMENT_ID_POS = 2;
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
@@ -39,16 +35,14 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(body, headers, status);
     }
 
-    @ExceptionHandler(value = NoSuchElementException.class)
-    protected ResponseEntity<Object> handleElementNotFoundById(
+    @ExceptionHandler(value = EntityNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFound(
             RuntimeException ex, WebRequest request
     ) {
-        String[] requestUri = request.getDescription(false).split("/");
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.NOT_FOUND);
-        body.put("message", "There are no " + requestUri[ELEMENT_POS]
-                + " with id " + requestUri[ELEMENT_ID_POS]);
+        body.put("message", ex.getMessage());
         return handleExceptionInternal(ex, body,
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
