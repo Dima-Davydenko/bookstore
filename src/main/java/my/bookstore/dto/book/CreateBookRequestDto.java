@@ -1,11 +1,11 @@
-package my.bookstore.dto;
+package my.bookstore.dto.book;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import lombok.Data;
-import my.bookstore.validation.Isbn;
+import my.bookstore.lib.Isbn;
 
 @Data
 public class CreateBookRequestDto {

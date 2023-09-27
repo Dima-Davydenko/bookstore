@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-admin
+      author: dmytro_davydenko
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: email, value: "admin@bookstore.com" }
+              - column: { name: password, value: "$2a$15$59WHQ9rc5OVm6QFZ1mneoe0Iz.WuChw82WmA1BHDKtYokw.rRa/CG" }
+              - column: { name: first_name, value: "admin" }
+              - column: { name: last_name, value: "admin" }
+        - insert:
+            tableName: users_roles
+            columns:
+              - column: { name: user_id, value: "1" }
+              - column: { name: role_id, value: "1" }
+        - insert:
+            tableName: users_roles
+            columns:
+              - column: { name: user_id, value: "1" }
+              - column: { name: role_id, value: "2" }
