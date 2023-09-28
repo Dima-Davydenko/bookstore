@@ -1,9 +1,9 @@
 package my.bookstore.service;
 
 import java.util.List;
-import my.bookstore.dto.BookDto;
-import my.bookstore.dto.BookSearchParameters;
-import my.bookstore.dto.CreateBookRequestDto;
+import my.bookstore.dto.book.BookDto;
+import my.bookstore.dto.book.BookSearchParameters;
+import my.bookstore.dto.book.CreateBookRequestDto;
 import org.springframework.data.domain.Pageable;
 
 public interface BookService {
@@ -16,4 +16,6 @@ public interface BookService {
     void delete(Long id);
 
     List<BookDto> search(BookSearchParameters searchParameters);
+
+    BookDto update(CreateBookRequestDto requestDto, Long id);
 }

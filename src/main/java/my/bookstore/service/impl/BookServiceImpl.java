@@ -2,9 +2,9 @@ package my.bookstore.service.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import my.bookstore.dto.BookDto;
-import my.bookstore.dto.BookSearchParameters;
-import my.bookstore.dto.CreateBookRequestDto;
+import my.bookstore.dto.book.BookDto;
+import my.bookstore.dto.book.BookSearchParameters;
+import my.bookstore.dto.book.CreateBookRequestDto;
 import my.bookstore.exception.EntityNotFoundException;
 import my.bookstore.mapper.BookMapper;
 import my.bookstore.model.Book;
@@ -52,5 +52,18 @@ public class BookServiceImpl implements BookService {
                 .stream()
                 .map(bookMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public BookDto update(CreateBookRequestDto requestDto, Long id) {
+        Book bookToUpdate = bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Can't update book. Incorrect id " + id));
+        bookToUpdate.setTitle(requestDto.getTitle());
+        bookToUpdate.setAuthor(requestDto.getAuthor());
+        bookToUpdate.setPrice(requestDto.getPrice());
+        bookToUpdate.setIsbn(requestDto.getIsbn());
+        bookToUpdate.setDescription(requestDto.getDescription());
+        bookToUpdate.setCoverImage(requestDto.getCoverImage());
+        return bookMapper.toDto(bookRepository.save(bookToUpdate));
     }
 }
