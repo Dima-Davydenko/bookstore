@@ -13,6 +13,7 @@ import my.bookstore.repository.book.BookSpecificationBuilder;
 import my.bookstore.service.BookService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -47,6 +48,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public List<BookDto> search(BookSearchParameters searchParameters) {
         return bookRepository.findAll(bookSpecificationBuilder.build(searchParameters))
                 .stream()
@@ -64,6 +66,7 @@ public class BookServiceImpl implements BookService {
         bookToUpdate.setIsbn(requestDto.getIsbn());
         bookToUpdate.setDescription(requestDto.getDescription());
         bookToUpdate.setCoverImage(requestDto.getCoverImage());
+        bookToUpdate.setCategories(requestDto.getCategories());
         return bookMapper.toDto(bookRepository.save(bookToUpdate));
     }
 }
