@@ -2,6 +2,7 @@ package my.bookstore.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import my.bookstore.dto.book.BookDtoWithoutCategoryIds;
@@ -36,7 +37,7 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Create a new category",
             description = "Saves a new book category in database")
-    public CategoryDto createCategory(@RequestBody CategoryRequestDto request) {
+    public CategoryDto createCategory(@Valid @RequestBody CategoryRequestDto request) {
         return categoryService.save(request);
     }
 
@@ -69,7 +70,10 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Change book category",
             description = "Change information about category")
-    public CategoryDto update(@RequestBody CategoryRequestDto requestDto, @RequestParam Long id) {
+    public CategoryDto update(
+            @Valid @RequestBody CategoryRequestDto requestDto,
+            @RequestParam Long id
+    ) {
         return categoryService.update(requestDto, id);
     }
 
