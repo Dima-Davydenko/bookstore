@@ -16,8 +16,7 @@ public interface ShoppingCartService {
                                             CartItemQuantityRequestDto requestDto,
                                             Long cartItemId);
 
-    void removeItemFromShoppingCart(
-            User user,
-            Long cartItemId
-    );
+    void removeItemFromShoppingCart(User user, Long cartItemId);
+
+    void clear(Long shoppingCartId);
 }

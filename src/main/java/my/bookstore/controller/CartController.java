@@ -13,7 +13,6 @@ import my.bookstore.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +40,7 @@ public class CartController {
     )
     public void addBookToCart(Authentication auth,
                               @Valid @RequestBody CartItemRequestDto requestDto) {
-        User user = getUserByEmail(auth);
+        User user = userService.getAuthenticatedUser(auth);
         shoppingCartService.addBookToCart(user, requestDto);
     }
 
@@ -50,7 +49,7 @@ public class CartController {
     @Operation(
             summary = "Show shopping cart", description = "Show all books in users shopping cart")
     public ShoppingCartDto getShoppingCart(Authentication auth) {
-        User user = getUserByEmail(auth);
+        User user = userService.getAuthenticatedUser(auth);
         return shoppingCartService.getShoppingCart(user);
     }
 
@@ -63,7 +62,7 @@ public class CartController {
     public ShoppingCartDto updateBookQuantity(Authentication auth,
                                               @RequestBody CartItemQuantityRequestDto requestDto,
                                               @PathVariable Long cartItemId) {
-        User user = getUserByEmail(auth);
+        User user = userService.getAuthenticatedUser(auth);
         return shoppingCartService.updateCartItemsQuantity(user, requestDto, cartItemId);
     }
 
@@ -75,14 +74,7 @@ public class CartController {
             description = "Delete selected book in users shopping cart"
     )
     public void removeItemFromShoppingCart(Authentication auth, @PathVariable Long cartItemId) {
-        User user = getUserByEmail(auth);
+        User user = userService.getAuthenticatedUser(auth);
         shoppingCartService.removeItemFromShoppingCart(user, cartItemId);
-    }
-
-    private User getUserByEmail(Authentication auth) {
-        UserDetails details = (UserDetails) auth.getPrincipal();
-        String email = details.getUsername();
-        return userService.findByEmail(email).orElseThrow(
-                () -> new RuntimeException("User with email " + email + " not found"));
     }
 }
