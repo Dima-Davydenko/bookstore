@@ -1,10 +1,11 @@
 package my.bookstore.dto.order;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import my.bookstore.lib.OrderStatus;
+import my.bookstore.model.Order;
 
 @Data
 public class OrderStatusRequestDto {
-    @OrderStatus
-    private String status;
+    @NotNull
+    private Order.Status status;
 }

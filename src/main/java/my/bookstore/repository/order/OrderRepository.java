@@ -8,11 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    String getOrdersByUserQuery = "SELECT o FROM Order o JOIN FETCH o.orderItems oi "
-            + "JOIN FETCH o.user WHERE o.user = :user";
-    @Query(getOrdersByUserQuery)
+    @Query("SELECT o FROM Order o JOIN FETCH o.orderItems oi "
+            + "JOIN FETCH o.user WHERE o.user = :user")
     List<Order> getAllByUser(Pageable pageable, User user);
-
-    @Query(getOrdersByUserQuery)
-    List<Order> getAllByUser(User user);
 }

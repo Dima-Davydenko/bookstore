@@ -65,8 +65,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderItemDto> getAllItemsFromOrder(User user, Long orderId) {
-        List<Order> usersOrdersHistory = orderRepository.getAllByUser(user);
+    public List<OrderItemDto> getAllItemsFromOrder(User user, Long orderId, Pageable pageable) {
+        List<Order> usersOrdersHistory = orderRepository.getAllByUser(pageable, user);
         Order order = usersOrdersHistory.stream()
                 .filter(o -> o.getId().equals(orderId))
                 .findFirst()
@@ -78,8 +78,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderItemDto getOrderItemFromOrder(User user, Long orderId, Long itemId) {
-        List<OrderItemDto> allItemsFromOrder = getAllItemsFromOrder(user, orderId);
+    public OrderItemDto getOrderItemFromOrder(User user,
+                                              Long orderId,
+                                              Long itemId,
+                                              Pageable pageable) {
+        List<OrderItemDto> allItemsFromOrder = getAllItemsFromOrder(user, orderId, pageable);
         return allItemsFromOrder.stream()
                 .filter(i -> i.getId().equals(itemId))
                 .findFirst()
@@ -91,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
     public void updateStatus(Long orderId, OrderStatusRequestDto status) {
         Order order = orderRepository.findById(orderId).orElseThrow(
                 () -> new EntityNotFoundException("There is no order with id " + orderId));
-        order.setStatus(Order.Status.valueOf(status.getStatus()));
+        order.setStatus(status.getStatus());
         orderRepository.save(order);
     }
 

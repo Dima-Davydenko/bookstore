@@ -13,9 +13,9 @@ public interface OrderService {
 
     List<OrderDto> getOrderHistory(Pageable pageable, User user);
 
-    List<OrderItemDto> getAllItemsFromOrder(User user, Long orderId);
+    List<OrderItemDto> getAllItemsFromOrder(User user, Long orderId, Pageable pageable);
 
-    OrderItemDto getOrderItemFromOrder(User user, Long orderId, Long itemId);
+    OrderItemDto getOrderItemFromOrder(User user, Long orderId, Long itemId, Pageable pageable);
 
     void updateStatus(Long orderId, OrderStatusRequestDto status);
 }

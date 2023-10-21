@@ -55,9 +55,10 @@ public class OrderController {
             summary = "Get order items.",
             description = "Get all order items from user's specific order.")
     public List<OrderItemDto> getAllItemsFromOrder(@PathVariable Long orderId,
-                                                   Authentication auth) {
+                                                   Authentication auth,
+                                                   Pageable pageable) {
         User user = userService.getAuthenticatedUser(auth);
-        return orderService.getAllItemsFromOrder(user, orderId);
+        return orderService.getAllItemsFromOrder(user, orderId, pageable);
     }
 
     @GetMapping("/{orderId}/items/{itemId}")
@@ -67,9 +68,10 @@ public class OrderController {
             description = "Get specific order item from user's specific order.")
     public OrderItemDto getOrderItemFromOrder(@PathVariable Long orderId,
                                               @PathVariable Long itemId,
-                                              Authentication auth) {
+                                              Authentication auth,
+                                              Pageable pageable) {
         User user = userService.getAuthenticatedUser(auth);
-        return orderService.getOrderItemFromOrder(user, orderId, itemId);
+        return orderService.getOrderItemFromOrder(user, orderId, itemId, pageable);
     }
 
     @PatchMapping("/{orderId}")
