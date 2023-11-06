@@ -77,6 +77,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCartRepository.save(shoppingCart);
     }
 
+    @Override
+    public void clear(Long shoppingCartId) {
+        cartItemRepository.deleteAllByShoppingCartId(shoppingCartId);
+    }
+
     private CartItem getItemFromShoppingCartById(ShoppingCart shoppingCart, Long id) {
         return shoppingCart.getCartItems().stream()
                 .filter(ci -> ci.getId().equals(id))

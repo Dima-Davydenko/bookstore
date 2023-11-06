@@ -1,6 +1,5 @@
 package my.bookstore.service.impl;
 
-import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import my.bookstore.dto.user.UserRegistrationRequest;
@@ -13,6 +12,8 @@ import my.bookstore.repository.role.RoleRepository;
 import my.bookstore.repository.user.UserRepository;
 import my.bookstore.service.ShoppingCartService;
 import my.bookstore.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +48,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User getAuthenticatedUser(Authentication auth) {
+        UserDetails details = (UserDetails) auth.getPrincipal();
+        String email = details.getUsername();
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new RuntimeException("User with email " + email + " not found"));
     }
 }
